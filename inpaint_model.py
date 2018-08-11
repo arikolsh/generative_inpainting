@@ -168,10 +168,10 @@ class InpaintCAModel(Model):
         local_patch_mask = local_patch(mask, bbox)
         l1_alpha = config.COARSE_L1_ALPHA
         losses['l1_loss'] = l1_alpha * tf.reduce_mean(
-            tf.abs(local_patch_batch_pos - local_patch_x1) * spatial_discounting_mask(config))
+            tf.abs(local_patch_batch_pos - local_patch_x1))# * spatial_discounting_mask(config))
         if not config.PRETRAIN_COARSE_NETWORK:
             losses['l1_loss'] += tf.reduce_mean(
-                tf.abs(local_patch_batch_pos - local_patch_x2) * spatial_discounting_mask(config))
+                tf.abs(local_patch_batch_pos - local_patch_x2)(# * spatial_discounting_mask(config))
         losses['ae_loss'] = l1_alpha * tf.reduce_mean(tf.abs(batch_pos - x1) * (1. - mask))
         if not config.PRETRAIN_COARSE_NETWORK:
             losses['ae_loss'] += tf.reduce_mean(tf.abs(batch_pos - x2) * (1. - mask))
